@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
   },
   checkbox: {
-    width: "80%",
+    width: '75%',
     flexDirection: "row",
     alignItems: "center",
   },
