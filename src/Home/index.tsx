@@ -14,6 +14,12 @@ import { Task } from "../components/Task";
 export default function Home() {
   const [tasks, setTasks] = useState<string[]>([]);
   const [taskAdd, setTaskAdd] = useState("");
+  const [countAdd, setCountAdd] = useState(0);
+  const [countDone, setCountDone] = useState(0);
+
+  function handleDoneTask() {
+    setCountDone(countDone + 1);
+  }
 
   function handleAddTask() {
     if (tasks.includes(taskAdd)) {
@@ -22,13 +28,17 @@ export default function Home() {
 
     setTasks((prevState) => [...prevState, taskAdd]);
     setTaskAdd("");
+
+    setCountAdd(countAdd + 1);
   }
   function handleRemoveTask(name: string) {
     Alert.alert("Remover", "Deseja remover essa tarefa?", [
       {
         text: "Sim",
-        onPress: () =>
+        onPress: () => {
           setTasks((prevState) => prevState.filter((Task) => Task !== name)),
+            setCountAdd(countAdd - 1);
+        },
       },
       {
         text: "Não",
@@ -40,9 +50,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.containerRow}>
-        <Image source={require("../assets/rocket.png")} />
-        <Text style={styles.textTo}>to</Text>
-        <Text style={styles.textDo}>do</Text>
+        <Image source={require("../assets/Logo.png")} />
       </View>
 
       <View style={styles.containerRow}>
@@ -62,13 +70,13 @@ export default function Home() {
         <View style={styles.containerRow}>
           <Text style={styles.textCreate}>Criadas</Text>
           <View style={styles.containerCount}>
-            <Text style={styles.textCount}>0</Text>
+            <Text style={styles.textCount}>{countAdd}</Text>
           </View>
         </View>
         <View style={styles.containerRow}>
           <Text style={styles.textDone}>Concluídas</Text>
           <View style={styles.containerCount}>
-            <Text style={styles.textCount}>0</Text>
+            <Text style={styles.textCount}>{countDone}</Text>
           </View>
         </View>
       </View>
@@ -82,6 +90,7 @@ export default function Home() {
             key={item}
             name={item}
             onRemove={() => handleRemoveTask(item)}
+            onDone={handleDoneTask}
           />
         )}
         showsVerticalScrollIndicator={false}
